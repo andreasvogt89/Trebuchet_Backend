@@ -39,8 +39,8 @@ public class Controller {
     }
 
     public void startTrending(){
-        Client clientBüro = new Client("http://192.168.1.90:80/report","Büro");
-        Client clientServer = new Client("http://192.168.1.97:80/report","Server");
+        Client clientBüro = new Client("http://192.168.1.90:80/report","Server Raum");
+        Client clientServer = new Client("http://192.168.1.97:80/report","Büro");
         dataBaseController.startDatabaseEntry(clientBüro);
         dataBaseController.startDatabaseEntry(clientServer);
     }
