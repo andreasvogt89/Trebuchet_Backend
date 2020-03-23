@@ -25,13 +25,12 @@ public class Controller {
     }
 
     @GetMapping("/ms")
-    public List<MyStromTable> index() {
-        List<MyStromTable> myStromTables = new ArrayList<>();
-        myStromTables.addAll(dataBaseController.getMyStromTableList().values());
-        System.out.println("GET Stromis");
-        return myStromTables;
+    public List<MyStromTable> getDevices() {
+        System.out.println("GET devices");
+        return new ArrayList<>(dataBaseController.getMyStromTableList().values());
     }
 
+    //TODO
     @GetMapping("/list/{deviceName}")
     public List<MyStromTable> indexList(@PathVariable String deviceName) {
         System.out.println("GET list from" + deviceName);
@@ -39,9 +38,9 @@ public class Controller {
     }
 
     public void startTrending(){
-        Client clientBüro = new Client("http://192.168.1.90:80/report","Server Raum");
-        Client clientServer = new Client("http://192.168.1.97:80/report","Büro");
-        dataBaseController.startDatabaseEntry(clientBüro);
-        dataBaseController.startDatabaseEntry(clientServer);
+        Client clientServerRoom = new Client("http://192.168.1.90:80/report","Server Raum");
+        Client clientOffice = new Client("http://192.168.1.97:80/report","Büro");
+        dataBaseController.startDatabaseEntry(clientServerRoom);
+        dataBaseController.startDatabaseEntry(clientOffice);
     }
 }
