@@ -1,0 +1,53 @@
+package com.trebuchet.controller;
+
+import com.trebuchet.database.DataBaseController;
+
+import com.trebuchet.database.MyStromTable;
+import com.trebuchet.restclient.Client;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+
+@RestController
+@Configuration
+@CrossOrigin
+@Component
+public class HttpController {
+
+    private DataBaseController dataBaseController;
+    private static final Logger LOGGER = LoggerFactory.getLogger(HttpController.class);
+    static Client clientServerRoom = new Client("http://192.168.1.90:80/report","Server Raum");
+    static Client clientOffice = new Client("http://192.168.1.97:80/report","Büro");
+
+    @Autowired
+    public HttpController(DataBaseController dataBaseController){
+        this.dataBaseController = dataBaseController;
+        startTrending();
+    }
+
+    @GetMapping("/")
+    public String displayMessageFor8080(){
+        return "The Application is running, see /Logs/Log.log for more information";
+    }
+
+    //TODO more db queries have to be
+    @GetMapping("/list/{deviceName}")
+    public List<MyStromTable> indexList(@PathVariable String deviceName) {
+        LOGGER.info("Get List of:" + deviceName);
+        return dataBaseController.getList(deviceName);
+    }
+
+    @GetMapping("/settings")
+    public Integer getSettings(){
+        return dataBaseController.getFrontendSettings().getReportHours();
+    }
+
+    public void startTrending(){
+        dataBaseController.startDatabaseEntry(clientServerRoom);
+        dataBaseController.startDatabaseEntry(clientOffice);
+    }
+}
