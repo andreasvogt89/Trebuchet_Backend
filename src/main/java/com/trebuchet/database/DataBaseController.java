@@ -4,7 +4,6 @@ import com.trebuchet.restclient.Client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
@@ -14,7 +13,6 @@ import java.util.*;
 @Component
 public class DataBaseController {
 
-    private HashMap<String,MyStromTable> myStromTableList = new HashMap<>();
     private static final Logger LOGGER = LoggerFactory.getLogger(DataBaseController.class);
     private FrontendSettings frontendSettings;
     private DataRepository dataRepository;
@@ -33,7 +31,6 @@ public class DataBaseController {
             public void run() {
                 MyStromTable myStromTable = new MyStromTable(client.getMyStromData(),client.getName());
                 dataRepository.save(myStromTable);
-                myStromTableList.put(myStromTable.getDeviceName(),myStromTable);
             }
         }, 0, 60000);
     }

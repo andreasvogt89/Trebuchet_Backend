@@ -2,12 +2,15 @@ package com.trebuchet.controller;
 
 import com.trebuchet.database.DataBaseController;
 
+import com.trebuchet.database.FrontendSettings;
 import com.trebuchet.database.MyStromTable;
 import com.trebuchet.restclient.Client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -42,9 +45,16 @@ public class HttpController {
     }
 
     @GetMapping("/settings")
-    public Integer getSettings(){
-        return dataBaseController.getFrontendSettings().getReportHours();
+    public FrontendSettings getSettings(){
+        return dataBaseController.getFrontendSettings();
     }
+
+    @PostMapping("/settings")
+    public ResponseEntity<FrontendSettings> setSettings(@RequestBody FrontendSettings frontendSettings){
+        dataBaseController.getFrontendSettings().setReportHours(frontendSettings.getReportHours());
+        return new ResponseEntity<FrontendSettings>(frontendSettings, HttpStatus.OK);
+    }
+
 
     public void startTrending(){
         dataBaseController.startDatabaseEntry(clientServerRoom);

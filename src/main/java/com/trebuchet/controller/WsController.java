@@ -56,6 +56,7 @@ public class WsController {
             }
         }, 0, 500);
     }
+
     public ArrayList<MyStromTable> getCurrentMyStromData() {
         currentMyStromData.clear();
         MyStromTable tempOffice = new MyStromTable(HttpController.clientOffice.getMyStromData()
