@@ -21,7 +21,7 @@ import java.util.List;
 @Component
 public class HttpController {
 
-    private DataBaseController dataBaseController;
+    private final DataBaseController dataBaseController;
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpController.class);
     static Client clientServerRoom = new Client("http://192.168.1.90:80/report","Server Raum");
     static Client clientOffice = new Client("http://192.168.1.97:80/report","Büro");
@@ -54,7 +54,6 @@ public class HttpController {
         dataBaseController.getFrontendSettings().setReportHours(frontendSettings.getReportHours());
         return new ResponseEntity<FrontendSettings>(frontendSettings, HttpStatus.OK);
     }
-
 
     public void startTrending(){
         dataBaseController.startDatabaseEntry(clientServerRoom);

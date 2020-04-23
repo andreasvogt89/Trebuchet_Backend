@@ -32,7 +32,7 @@ public class DataBaseController {
                 MyStromTable myStromTable = new MyStromTable(client.getMyStromData(),client.getName());
                 dataRepository.save(myStromTable);
             }
-        }, 0, 60000);
+        }, 0, 15 * 60000);// 15min
     }
 
     public List<MyStromTable> getList(String deviceName){
@@ -40,7 +40,7 @@ public class DataBaseController {
     }
 
     public Timestamp getAnalyticDate(){
-       return new Timestamp(System.currentTimeMillis() - frontendSettings.getReportHours() * 3600 * 1000);
+        return new Timestamp(System.currentTimeMillis() - frontendSettings.getReportHours() * 3600 * 1000);
     }
 
     public FrontendSettings getFrontendSettings() {
