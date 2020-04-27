@@ -31,11 +31,9 @@ public class WsController {
         startStream();
     }
 
-
     @MessageMapping("/submystrom")
     @SendTo("/broker/submystrom")
     public void getDevices() {
-
     }
 
     @MessageMapping("/send")
@@ -63,4 +61,6 @@ public class WsController {
         currentMyStromData.add(tempServer);
         return currentMyStromData;
     }
+
+
 }

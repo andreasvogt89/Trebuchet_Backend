@@ -47,4 +47,10 @@ public class DataBaseController {
         return frontendSettings;
     }
 
+    public ArrayList<Double> getAverageData(String deviceName){
+        ArrayList<Double> data = new ArrayList<>();
+        data.add(dataRepository.getAverageTemperature(deviceName));
+        data.add(dataRepository.getAveragePower(deviceName));
+        return data;
+    }
 }
