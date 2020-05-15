@@ -31,7 +31,7 @@ public class HttpController {
     @Autowired
     public HttpController(DataBaseController dataBaseController){
         this.dataBaseController = dataBaseController;
-        //startTrending();
+        startTrending();
 
     }
 
@@ -65,12 +65,12 @@ public class HttpController {
 
     @GetMapping("/kraken")
     public String loginAndGetDataKraken()  {
-        String accessToken = kraken.requestKrakenToken("/webapi/auth.cgi?api=SYNO.API.Auth&version=3&method=login&account=Andreas&passwd=4556@A89xy$$&session=FileStation&format=cookie");
+        /*String accessToken = kraken.requestKrakenToken("/webapi/auth.cgi?api=SYNO.API.Auth&version=3&method=login&account=Andreas&passwd=4556@A89xy$$&session=FileStation&format=cookie");
         try {
             return kraken.GET_KrakenInfo("/webman/modules/SystemInfoApp/StorageUsageWidget.js",accessToken).toString();
         } catch (Exception e){
             e.printStackTrace();
-        }
+        }*/
         return null;
     }
 
