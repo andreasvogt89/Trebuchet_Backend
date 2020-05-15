@@ -55,6 +55,7 @@ public class WsController {
         currentMyStromData.clear();
         MyStromTable tempOffice = new MyStromTable(HttpController.clientOffice.getMyStromData()
                 ,HttpController.clientOffice.getName());
+
         MyStromTable tempServer = new MyStromTable(HttpController.clientServerRoom.getMyStromData()
                 ,HttpController.clientServerRoom.getName());
         currentMyStromData.add(tempOffice);

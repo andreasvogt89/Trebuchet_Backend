@@ -4,7 +4,7 @@ import com.trebuchet.database.DataBaseController;
 
 import com.trebuchet.database.FrontendSettings;
 import com.trebuchet.database.MyStromTable;
-import com.trebuchet.restclient.Client;
+import com.trebuchet.restclient.RequestService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -25,13 +24,15 @@ public class HttpController {
 
     private final DataBaseController dataBaseController;
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpController.class);
-    static Client clientServerRoom = new Client("http://192.168.1.90:80/report","Server Raum");
-    static Client clientOffice = new Client("http://192.168.1.97:80/report","Büro");
+    static RequestService clientServerRoom = new RequestService("http://192.168.1.90:80/report","Server Raum");
+    static RequestService clientOffice = new RequestService("http://192.168.1.97:80/report","Büro");
+    static RequestService kraken = new RequestService("http://192.168.1.220:5000","Kraken");
 
     @Autowired
     public HttpController(DataBaseController dataBaseController){
         this.dataBaseController = dataBaseController;
-        startTrending();
+        //startTrending();
+
     }
 
     @GetMapping("/")
@@ -57,14 +58,20 @@ public class HttpController {
         return new ResponseEntity<FrontendSettings>(frontendSettings, HttpStatus.OK);
     }
 
-    @GetMapping("/{deviceName}/calc")
-    public ArrayList<Double> sendAverage(@PathVariable String deviceName){
-        return dataBaseController.getAverageData(deviceName);
-    }
-
     public void startTrending(){
         dataBaseController.startDatabaseEntry(clientServerRoom);
         dataBaseController.startDatabaseEntry(clientOffice);
+    }
+
+    @GetMapping("/kraken")
+    public String loginAndGetDataKraken()  {
+        String accessToken = kraken.requestKrakenToken("/webapi/auth.cgi?api=SYNO.API.Auth&version=3&method=login&account=Andreas&passwd=4556@A89xy$$&session=FileStation&format=cookie");
+        try {
+            return kraken.GET_KrakenInfo("/webman/modules/SystemInfoApp/StorageUsageWidget.js",accessToken).toString();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

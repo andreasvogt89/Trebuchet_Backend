@@ -1,6 +1,6 @@
 package com.trebuchet.database;
 
-import com.trebuchet.restclient.Client;
+import com.trebuchet.restclient.RequestService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +14,8 @@ import java.util.*;
 public class DataBaseController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DataBaseController.class);
-    private FrontendSettings frontendSettings;
-    private DataRepository dataRepository;
+    private final FrontendSettings frontendSettings;
+    private final DataRepository dataRepository;
 
     @Autowired
     public DataBaseController(FrontendSettings frontendSettings, DataRepository dataRepository) {
@@ -24,7 +24,7 @@ public class DataBaseController {
 
     }
 
-    public void startDatabaseEntry(Client client) {
+    public void startDatabaseEntry(RequestService client) {
         Timer timer = new Timer();
         LOGGER.info("Start Trending for: " + client.getName());
         timer.schedule(new TimerTask() {
@@ -47,10 +47,4 @@ public class DataBaseController {
         return frontendSettings;
     }
 
-    public ArrayList<Double> getAverageData(String deviceName){
-        ArrayList<Double> data = new ArrayList<>();
-        data.add(dataRepository.getAverageTemperature(deviceName));
-        data.add(dataRepository.getAveragePower(deviceName));
-        return data;
-    }
 }
